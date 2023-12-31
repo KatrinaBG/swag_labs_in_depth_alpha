@@ -24,13 +24,28 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-import LoginPageObject from "../pages/loginPage";
+import LoginPageObject from '../pages/loginPage';
+import InventoryPageObject from '../pages/inventoryPage';
+import CheckOutStepOnePageObject from '../pages/checkoutStepOnePage';
+import CartPageObject from '../pages/cartPage';  
 
 const loginPage = new LoginPageObject();
+const inventoryPage = new InventoryPageObject();
+const cartPage = new CartPageObject();
+
 
 Cypress.Commands.add('login', () => {
-  loginPage.visit()
+  loginPage.visit();
   loginPage.fillUsername(Cypress.env('username'));
   loginPage.fillPassword(Cypress.env('password'));
   loginPage.submit();
+});
+
+Cypress.Commands.add('addProduct', (productName) => {
+  inventoryPage.addToCart(productName);
+});
+
+Cypress.Commands.add('proceedToCheckout', () => {
+  inventoryPage.goToShoppingCart();
+  cartPage.proceedToCheckout();
 });
